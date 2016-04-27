@@ -7,9 +7,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/newRandom', function(req, res, next){
-  request('http://api.icndb.com/jokes/random?callback=', function(error, response, body) {
+  request('http://api.icndb.com/jokes/random', function(error, response, body) {
    if (!error && response.statusCode == 200) {
-     body();
      console.log(body)
      res.json(body);
    };
