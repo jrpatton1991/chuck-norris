@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require ('mongoose');
 var TwitterStrategy = require('passport-twitter').Strategy;
+var session = require('express-session');
 
 mongoose.connect(process.env.DB_CONN_CHUCK_NORRIS);
 
@@ -45,6 +46,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({ secret: 'generalassembly' }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', routes);
 app.use('/users', users);
