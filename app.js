@@ -5,6 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require ('passport');
+var mongoose = require ('mongoose');
+var LocalStrategy = require('passport-local');
+
+mongoose.connect(mongoose.connect(process.env.DB_CONN_CHUCK_NORRIS);)
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
