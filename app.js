@@ -4,11 +4,30 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var passport = require ('passport');
 var mongoose = require ('mongoose');
-var LocalStrategy = require('passport-local');
+var TwitterStrategy = require('passport-twitter').Strategy;
 
-mongoose.connect(mongoose.connect(process.env.DB_CONN_CHUCK_NORRIS);)
+mongoose.connect(process.env.DB_CONN_CHUCK_NORRIS);
+
+//Passport config
+var passport = require ('passport');
+passport.use(new TwitterStrategy({
+    consumerKey: process.env.TWITTER_CONSUMER_KEY,
+    consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+    callbackURL: "http://www.localhost:3000/"
+  },
+  function(token, tokenSecret, profile, cb) {
+    User.findOrCreate({ twitterId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -50,6 +69,7 @@ if (app.get('env') === 'development') {
     });
   });
 }
+
 
 // production error handler
 // no stacktraces leaked to user
